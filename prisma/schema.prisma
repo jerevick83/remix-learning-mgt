@@ -1,0 +1,215 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["filteredRelationCount", "fullTextSearch", "interactiveTransactions"]
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  role          UserRole
+  isActive      Boolean         @default(true)
+  admissionNumb Int             @default(000000)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  password      Password?
+  profile       Profile?
+  testResults   Grade[]         @relation(name: "student-grade")
+  testsGraded   Grade[]         @relation(name: "postedBy")
+  level         LevelUser[]
+  invoice       Invoice[]
+  payment       PaymentDetail[]
+
+  @@index([isActive, role])
+}
+
+model LevelUser {
+  level         Level         @relation(fields: [levelId], references: [id])
+  isPromoted    Boolean       @default(false)
+  levelId       String
+  paymentStatus PaymentStatus @default(PENDING)
+  feesBalance   Int           @default(0)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        String
+
+  @@id([levelId, userId])
+  @@index([isPromoted])
+}
+
+model Level {
+  id            String          @id @default(cuid())
+  levelName     String          @unique
+  subject       Subject[]
+  invoice       Invoice[]
+  payment       PaymentDetail[]
+  test          Test[]
+  academic_year AcademicYear[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  user          LevelUser[]
+  grade         Grade[]
+
+  @@index([levelName])
+}
+
+model AcademicYear {
+  id            String          @id @default(cuid())
+  academic_year String          @unique
+  isCurrent     Boolean         @default(true)
+  level         Level[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  invoice       Invoice[]
+  payment       PaymentDetail[]
+
+  @@index([academic_year])
+}
+
+model Payment {
+  id             String          @id @default(cuid())
+  paymentDetails PaymentDetail[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model PaymentDetail {
+  bankName         String
+  pupilName        String
+  amount           Int
+  paymentDate      DateTime
+  payingSlipNumber String   @unique
+
+  payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  paymentId String
+
+  level   Level  @relation(fields: [levelId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  levelId String
+
+  academic_year    AcademicYear @relation(fields: [academic_year_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  academic_year_id String
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([paymentId, userId, payingSlipNumber, levelId])
+  @@index([pupilName, bankName, payingSlipNumber])
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  subjectName String
+  code        String   @unique
+  level       Level[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([subjectName])
+}
+
+model Password {
+  hash      String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id          String    @id @default(cuid())
+  dob         DateTime
+  pob         String
+  firstname   String
+  other_name  String
+  lastname    String
+  nationality String
+  address     String
+  gender      Gender    @default(OTHER)
+  image       Image?
+  referee     Referee[]
+  phone       String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([nationality, pob])
+}
+
+model Test {
+  id        String   @id @default(cuid())
+  testName  String   @unique
+  level     Level[]
+  grade     Grade[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([testName])
+}
+
+model Grade {
+  id           String   @id @default(cuid())
+  subject_name String
+  grade        Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  test         Test[]
+  level        Level[]
+  //Relation Fields
+  studentId    String
+  student      User     @relation(name: "student-grade", fields: [studentId], references: [id])
+  gradedBy     User     @relation(name: "postedBy", fields: [graderId], references: [id])
+  graderId     String
+}
+
+model Invoice {
+  id           String         @id @default(cuid())
+  amount       Int            @default(0)
+  academicYear AcademicYear[]
+  level        Level[]
+  assignedBy   User           @relation(fields: [assignedById], references: [id])
+  assignedById String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserRole {
+  GENERAL
+  PUPIL
+  TEACHER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum PaymentStatus {
+  COMPLETED
+  INCOMPLETE
+  PENDING
+}
+
+model Referee {
+  id      String  @id @default(cuid())
+  refName String
+  contact String
+  address String
+  profile Profile @relation(fields: [refId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  refId   String  @unique
+}
+
+model Image {
+  id      String  @id @default(cuid())
+  image   String
+  profile Profile @relation(fields: [imgId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  imgId   String  @unique
+}
