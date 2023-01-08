@@ -1,8 +1,12 @@
-import path from "path";
-import express from "express";
-import compression from "compression";
-import morgan from "morgan";
 import { createRequestHandler } from "@remix-run/express";
+
+import path from "path";
+
+import express from "express";
+
+import compression from "compression";
+
+import morgan from "morgan";
 
 const app = express();
 
@@ -82,7 +86,7 @@ app.all(
     }
 );
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
   // require the built app so we're ready when the first request comes in
