@@ -43,10 +43,10 @@ export default function Pupil() {
           <NavLink className={navData => navData.isActive ? active : inactive}
                    to={"announcement"}><span><AiTwotoneNotification
             size={size} /></span><span> Announcements</span></NavLink>
-          <NavLink className={navData => navData.isActive ? active : inactive}
-                   to={"add_user"}><span><AiTwotoneNotification size={size} /></span><span> Add  User</span></NavLink>
-          <NavLink className={navData => navData.isActive ? active : inactive}
-                   to={"$usersId"}><span><AiTwotoneNotification size={size} /></span><span>Users</span></NavLink>
+          {/* <NavLink className={navData => navData.isActive ? active : inactive}
+                   to={"add_user"}><span><AiTwotoneNotification size={size} /></span><span> Add  User</span></NavLink> */}
+          {/* <NavLink className={navData => navData.isActive ? active : inactive}
+                   to={"$usersId"}><span><AiTwotoneNotification size={size} /></span><span>Users</span></NavLink> */}
         </nav>
       </section>
       <main className={dashboardMain}><Outlet /></main>
