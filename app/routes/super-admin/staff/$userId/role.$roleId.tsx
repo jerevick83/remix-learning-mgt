@@ -23,7 +23,7 @@ const validator = withZod(
   })
 );
 export const action: ActionFunction = async ({ request, params }) => {
-  invariant(params.roleId,()=> "No staff ID found");
+  // invariant(params.roleId,()=> "No staff ID found");
   const formData = await request.formData();
   const id = params.roleId;
   const { data, error } = await validator.validate(formData);

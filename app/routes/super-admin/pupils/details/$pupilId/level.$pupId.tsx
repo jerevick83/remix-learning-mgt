@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 };
 export const action: ActionFunction = async ({ request, params }) => {
   const pupilId = params.pupilId;
-  invariant(pupilId,()=> "ID cannot be empty");
+  // invariant(pupilId,()=> "ID cannot be empty");
   const formData = await request.formData();
   const levelId = formData.get("level") as string;
 

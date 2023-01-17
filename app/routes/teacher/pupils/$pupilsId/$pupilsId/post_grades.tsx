@@ -29,7 +29,7 @@ export const meta: MetaFunction = () => {
 export const action: ActionFunction = async ({ request, params }) => {
   const pupilId = params.pupilsId;
   const userId = (await requireUserId(request)) as string;
-  invariant([pupilId, userId],()=> "No id found");
+  // invariant([pupilId, userId],()=> "No id found");
   const formaData = await request.formData();
   const subject_name = formaData.get("subject") as string;
   const grade = Number(formaData.get("grade"));

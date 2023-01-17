@@ -22,7 +22,7 @@ const validator = withZod(
 );
 
 export const action: ActionFunction = async ({ request, params }) => {
-  invariant([requireUserId(request),params?.pupilId],()=> "No id is provided");
+  // invariant([requireUserId(request),params?.pupilId],()=> "No id is provided");
   // invariant(, "No id is provided");
 
   const pupilId = params.pupilId;

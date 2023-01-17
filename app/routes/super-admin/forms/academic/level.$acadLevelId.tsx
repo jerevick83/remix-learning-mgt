@@ -28,7 +28,7 @@ export const meta: MetaFunction = () => {
 };
 export const action: ActionFunction = async ({ request, params }) => {
   const acadId = params.acadLevelId;
-  invariant(acadId, ()=>"id is missing");
+  // invariant(acadId, ()=>"id is missing");
   const formData = await request.formData();
   const levelId = formData.get("levelId") as Level["id"];
 

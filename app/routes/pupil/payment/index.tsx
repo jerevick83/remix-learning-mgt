@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => {
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const url = new URL(request.url).searchParams;
-  invariant(userId,()=>"Not logged in user");
+  // invariant(userId,()=>"Not logged in user");
   let levelId = url.get("levelId") as string;
 
   levelId = levelId ? levelId : "";

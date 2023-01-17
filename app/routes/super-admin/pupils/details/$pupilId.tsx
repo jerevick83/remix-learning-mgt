@@ -23,7 +23,7 @@ export const meta: MetaFunction = () => {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const userId = params.pupilId;
-  invariant(userId,()=> "Invalid user ID provided");
+  // invariant(userId,()=> "Invalid user ID provided");
   const formData = await request.formData();
   const levelId = formData.get("levelId") as string;
 

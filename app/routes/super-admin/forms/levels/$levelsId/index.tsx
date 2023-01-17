@@ -33,7 +33,7 @@ export const meta: MetaFunction = () => {
 };
 export const action: ActionFunction = async ({ request, params }) => {
   const levelId = params.levelsId;
-  invariant(levelId, ()=>"No levels Id specified");
+  // invariant(levelId, ()=>"No levels Id specified");
   const formData = await request.formData();
   const subjectName = formData.get("name") as string;
   const code = formData.get("code") as string;

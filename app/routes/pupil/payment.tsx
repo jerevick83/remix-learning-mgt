@@ -39,7 +39,7 @@ export const meta: MetaFunction = () => {
 };
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  invariant(userId, "no logged in user");
+  // invariant(userId, "no logged in user");
   const formData = await request.formData();
   const levelId = formData.get("levelId") as string;
   const acadYrId = formData.get("acadYrId") as string;
