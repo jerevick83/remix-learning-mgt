@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 };
 export const action: ActionFunction = async ({ request, params }) => {
   const id = await params.academicId;
-  invariant(id, "ID is missing");
+  invariant(id, ()=>"ID is missing");
   const formData = await request.formData();
   const acadState = formData.get("acadState") as Academic_Year["type"];
   await prisma.academicYear.update({

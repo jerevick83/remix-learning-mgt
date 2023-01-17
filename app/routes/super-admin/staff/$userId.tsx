@@ -20,7 +20,7 @@ export const meta: MetaFunction = () => {
 };
 export const action: ActionFunction = async ({ request, params }) => {
   const userId = params.userId;
-  invariant(userId, "user id is unavailable");
+  invariant(userId, ()=>"user id is unavailable");
   const formData = await request.formData();
   const levelId = formData.get("classId") as string;
   const isPromo = await prisma.levelUser.findUnique({

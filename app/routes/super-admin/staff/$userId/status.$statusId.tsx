@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
   };
 };
 export const action: ActionFunction = async ({ request, params }) => {
-  invariant(params.statusId, "No staff ID found");
+  invariant(params.statusId, ()=>"No staff ID found");
   const id = params.statusId as User["id"];
   const formData = await request.formData();
   let isActive: boolean;

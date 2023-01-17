@@ -1,4 +1,4 @@
-import { PaymentDetail } from "@prisma/client";
+
 import {
   Form,
   NavLink,

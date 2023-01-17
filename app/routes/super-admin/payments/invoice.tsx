@@ -46,7 +46,7 @@ export const meta: MetaFunction = () => {
 };
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  invariant(userId, "Id not available");
+  invariant(userId, ()=>"Id not available");
   const formData = await request.formData();
   const amount = Number(formData.get("amount")) as Invoice["amount"];
   const level = formData.get("levelId") as string;

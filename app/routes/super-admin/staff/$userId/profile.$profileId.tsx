@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
   };
 };
 export const action: ActionFunction = async ({ request, params }) => {
-  invariant(params.profileId, "No staff ID found");
+  invariant(params.profileId, ()=> "No staff ID found");
   const formData = await request.formData();
   const id = params.profileId;
   const status = formData.get("status");
